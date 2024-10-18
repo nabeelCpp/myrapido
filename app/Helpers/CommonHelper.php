@@ -15,6 +15,7 @@ class CommonHelper
             'name' => 'PKR',
             'symbol' => 'Rs.',
             'code' => 'PKR',
+            'db_code' => 'pkr',
             'sort' => 0
         ],
         2 => [
@@ -22,6 +23,7 @@ class CommonHelper
             'name' => 'SAR',
             'symbol' => 'SR.',
             'code' => 'SAR',
+            'db_code' => 'sar',
             'sort' => 1
         ],
     ];
@@ -75,5 +77,15 @@ class CommonHelper
     public static function getGuardName(): string|null
     {
         return request()->whoIs;
+    }
+
+    /**
+     * Filter currency by id
+     * @param int $id
+     * @return array
+     * @author M Nabeel Arshad
+     */
+    public static function getCurrencyById(int $id): array {
+        return self::$currencies[$id];
     }
 }

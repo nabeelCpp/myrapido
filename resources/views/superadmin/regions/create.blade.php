@@ -28,7 +28,7 @@
                         <option value="{{ $c->id }}"
                             @if (old('city') == $c->id) selected @else @if (isset($region->city_id) && $region->city_id == $c->id) selected @endif
                             @endif data-state="{{ $c->state->name }}"
-                            data-country="{{ $c->state->country->name }}">{{ $c->name }}</option>
+                            data-country="{{ $c->state->country->name }}" data-currency="{{ $c->state->country->currency($c->state->country->currency_id)['name'] ?? '-' }}">{{ $c->name }}</option>
                     @endforeach
                 </select>
                 <label for="city">City*</label>
@@ -42,6 +42,11 @@
                 <input type="text" class="form-control" id="country" name="country" placeholder="Country" readonly
                     value="{{ old('country') ?? ($region->city->state->country->name ?? '') }}">
                 <label for="state">Country Name *</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="currency_id" name="currency_id" placeholder="Currency" readonly
+                    value="{{ old('currency_id') ?? ($region && $region->city->state->country->currency($region->city->state->country->currency_id)['name'] ? $region->city->state->country->currency($region->city->state->country->currency_id)['name'] : null) }}">
+                <label for="state">Currency</label>
             </div>
             <div class="form-floating mb-3">
                 <select class="form-select" id="admin" name="admin" aria-label="Floating label select example">
@@ -70,7 +75,7 @@
                 </select>
             </div>
 
-            <div class="form-floating mb-3">
+            {{-- <div class="form-floating mb-3">
                 <select class="form-select" id="currency_id" name="currency_id" aria-label="Floating label select example">
                     <option value="" disabled @if (!old('currency_id')) selected @endif>Select</option>
                     @foreach ($currencies as $c)
@@ -80,7 +85,7 @@
                     @endforeach
                 </select>
                 <label for="currency_id">Currency*</label>
-            </div>
+            </div> --}}
             <div class="form-floating mb-3">
                 <textarea name="address" id="address" class="form-control h-25" placeholder="Office Address *">{{ old('address') ?? ($region->address ?? '') }}</textarea>
                 <label for="currency_id">Office Address*</label>
@@ -122,6 +127,7 @@
             var country = city.find('option:selected').data('country');
             $('#state').val(state);
             $('#country').val(country);
+            $('#currency_id').val(city.find('option:selected').data('currency'));
         });
     </script>
 @endsection

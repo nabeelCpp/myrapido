@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SuperAdmin\PlanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('regions', function (Blueprint $table) {
-            $table->unsignedBigInteger('currency_id')->nullable();
+            // $table->unsignedBigInteger('currency_id')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('status')->default(true); // Status field with a default value of true
@@ -25,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('regions', function (Blueprint $table) {
-            $table->dropColumn(['currency_id', 'address', 'phone', 'status']);
+            $table->dropColumn([ 'address', 'phone', 'status']);
         });
     }
 };

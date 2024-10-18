@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Region extends Model
 {
-    protected $fillable = ['name', 'city_id', 'admin_id', 'currency_id', 'address', 'phone', 'status'];
+    protected $fillable = ['name', 'city_id', 'admin_id', 'address', 'phone', 'status'];
     use HasFactory;
 
     public function admin()  {

@@ -5,7 +5,7 @@
 @section('content')
     <div class="bg-light rounded h-100 p-4">
         <h6 class="mb-4"> @if ($plan) Update @else Create @endif Plan</h6>
-        <form action="@if($plan){{ route('admin.plans.update', $plan->id) }}@else{{ route('admin.plans.store') }} @endif" method="post">
+        <form action="@if($plan){{ route($guard.'.plans.update', $plan->id) }}@else{{ route($guard.'.plans.store') }} @endif" method="post">
             @if ($plan)
                 @method('put')
             @endif
@@ -24,7 +24,7 @@
                     <table class="table table-borderless">
                         <thead>
                             <tr>
-                                <th scope="col">Currency [{{ \App\Helpers\CommonHelper::SYSTEM_CURRENCY }}]</th>
+                                <th scope="col">Duration</th>
                                 @foreach ($vehicles as $item)
                                     <th scope="col">{{$item['name'] }}</th>
                                 @endforeach
@@ -35,7 +35,14 @@
                                 <tr>
                                     <th scope="row">{{ $item['title'] }}</th>
                                     @foreach ($vehicles as $v)
-                                        <td><input type="number" class="form-control" placeholder="Price" min="0" name="price[{{$item['id']}}][{{$v['id']}}]" value="{{ old('price.'.$item['id'].'.'.$v['id']) ?? ($plan_prices[$item['id']][$v['id']] ?? '') }}"></td>
+                                        <td>
+                                            @foreach ($currencies as $cur)
+                                                <div class="form-floating mb-1">
+                                                    <input type="number" class="form-control" placeholder="Price ({{$cur['name']}})" min="0" name="price[{{$item['id']}}][{{$v['id']}}][{{$cur['id']}}]" value="{{ old('price.'.$item['id'].'.'.$v['id'].'.'.$cur['id']) ?? ($plan_prices[$item['id']][$v['id']][$cur['id']] ?? '') }}" id="price_{{$item['id']}}_{{$v['id']}}_{{$cur['id']}}">
+                                                    <label for="price_{{$item['id']}}_{{$v['id']}}_{{$cur['id']}}">Price ({{$cur['name']}})</label>
+                                                </div>
+                                            @endforeach
+                                        </td>
                                     @endforeach
                                 </tr>
                             @endforeach

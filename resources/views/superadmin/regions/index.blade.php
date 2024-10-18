@@ -33,7 +33,7 @@
                                         <p class="small">
                                             <strong>Address:</strong> {{ $r->address }}<br>
                                             <strong>Phone:</strong> {{ $r->phone }}<br>
-                                            <strong>Currency:</strong> {{ $currencies[$r->currency_id]['name'] }}
+                                            <strong>Currency:</strong> {{ $r->city->state->country->currency($r->city->state->country->currency_id)['name'] ?? '-' }}
                                         </p>
                                     </td>
                                     <td>{{ $r->city->name }}</td>

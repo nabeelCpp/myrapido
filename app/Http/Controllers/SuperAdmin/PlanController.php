@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\SuperAdmin;
 
 use App\Helpers\CommonHelper;
 use App\Http\Controllers\Controller;
@@ -17,7 +17,8 @@ class PlanController extends Controller
     {
         $data['plans'] = Plan::all();
         $data['title'] = 'Plans';
-        return view('admin.plans.index', $data);
+        $data['guard'] = CommonHelper::getGuardName();
+        return view($data['guard'].'.plans.index', $data);
     }
 
     /**
@@ -27,7 +28,9 @@ class PlanController extends Controller
     {
         $data['plan_prices_duration'] = CommonHelper::$planPriceDurations;
         $data['vehicles'] = CommonHelper::$vehicle_types;
-        return view('admin.plans.create', $data);
+        $data['guard'] = CommonHelper::getGuardName();
+        $data['currencies'] = CommonHelper::$currencies;
+        return view($data['guard'].'.plans.create', $data);
     }
 
     /**
@@ -35,6 +38,7 @@ class PlanController extends Controller
      */
     public function store(Request $request)
     {
+        $guard = CommonHelper::getGuardName();
         $request->validate([
             'title' => 'required|unique:plans,title',
             'sub_title' => 'required',
@@ -49,16 +53,20 @@ class PlanController extends Controller
             ]);
 
             foreach ($request->price as $duration => $value) {
-                foreach ($value as $vehicle => $price) {
-                    PlanPrice::create([
+                foreach ($value as $vehicle => $arr) {
+                    $create = [
                         'plan_id' => $plan->id,
                         'duration_id' => $duration,
                         'vehicle_type_id' => $vehicle,
-                        'price' => $price
-                    ]);
+                    ];
+                    foreach ($arr as $currency_id => $price) {
+                        $currency = CommonHelper::getCurrencyById($currency_id);
+                        $create['price_'.$currency['db_code']] = $price;
+                    }
+                    PlanPrice::create($create);
                 }
             }
-            return CommonHelper::redirect('success',  'Plan saved successfully!', 'admin.plans.index');
+            return CommonHelper::redirect('success',  'Plan saved successfully!', $guard.'.plans.index');
         } catch (\Throwable $th) {
             //throw $th;
             return CommonHelper::redirect('error',  'Error: '.$th->getMessage());
@@ -78,15 +86,19 @@ class PlanController extends Controller
      */
     public function edit(string $id)
     {
+        $data['guard'] = CommonHelper::getGuardName();
         $data['plan_prices_duration'] = CommonHelper::$planPriceDurations;
         $data['vehicles'] = CommonHelper::$vehicle_types;
         $plan = Plan::find($id);
         $data['plan'] = $plan;
+        $data['currencies'] = CommonHelper::$currencies;
         foreach ($plan->planPrices as $key => $value) {
-            $plan_prices[$value->duration_id][$value->vehicle_type_id] = $value->price;
+            foreach (CommonHelper::$currencies as $currency) {
+                $plan_prices[$value->duration_id][$value->vehicle_type_id][$currency['id']] = $value['price_'.$currency['db_code']] ?? null;
+            }
         }
         $data['plan_prices'] = $plan_prices ?? [];
-        return view('admin.plans.create', $data);
+        return view($data['guard'].'.plans.create', $data);
     }
 
     /**
@@ -99,6 +111,7 @@ class PlanController extends Controller
             'sub_title' => 'required',
             'description' => 'required',
         ]);
+        $guard = CommonHelper::getGuardName();
         $plan = Plan::findOrFail($id);
         try {
             $plan->title = $request->title;
@@ -109,17 +122,21 @@ class PlanController extends Controller
             $plan->planPrices()->delete();
             // add new plan prices
             foreach ($request->price as $duration => $value) {
-                foreach ($value as $vehicle => $price) {
-                    PlanPrice::create([
+                foreach ($value as $vehicle => $arr) {
+                    $create = [
                         'plan_id' => $plan->id,
                         'duration_id' => $duration,
                         'vehicle_type_id' => $vehicle,
-                        'price' => $price
-                    ]);
+                    ];
+                    foreach ($arr as $currency_id => $price) {
+                        $currency = CommonHelper::getCurrencyById($currency_id);
+                        $create['price_'.$currency['db_code']] = $price;
+                    }
+                    PlanPrice::create($create);
                 }
             }
             $plan->save();
-            return CommonHelper::redirect('success',  'Plan updated successfully!', 'admin.plans.index');
+            return CommonHelper::redirect('success',  'Plan updated successfully!', $guard.'.plans.index');
         } catch (\Throwable $th) {
             //throw $th;
             return CommonHelper::redirect('error',  'Error: '.$th->getMessage());
@@ -133,6 +150,6 @@ class PlanController extends Controller
     {
         $plan = Plan::findOrFail($id);
         $plan->delete();
-        return CommonHelper::redirect('success',  'Plan deleted successfully!', 'admin.plans.index');
+        return CommonHelper::redirect('success',  'Plan deleted successfully!', request('whoIs').'.plans.index');
     }
 }

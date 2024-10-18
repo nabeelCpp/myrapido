@@ -39,7 +39,7 @@ class RegionController extends Controller
         $data['cities'] = City::all();
         $data['admins'] = Admin::all(['name', 'id']) ?? [];
         $data['guard'] = CommonHelper::getGuardName();
-        $data['currencies'] = CommonHelper::$currencies;
+        // $data['currencies'] = CommonHelper::$currencies;
         $data['vehicle_types'] = CommonHelper::$vehicle_types;
         return view($data['guard'].'.regions.create', $data);
     }
@@ -53,21 +53,21 @@ class RegionController extends Controller
             'name' => 'required',
             'city' => 'required',
             'admin' => 'nullable|exists:admins,id', // Admin assignment is optional
-            'currency_id' => 'required',
+            // 'currency_id' => 'required',
             'address' => 'required',
             'phone' => 'required',
             'vehicle_type_id' => 'required|array'
         ], [
             'name.required' => 'Region name is required!',
             'city.required' => 'Region City is required!',
-            'currency_id.required' => 'Region Currency is required!',
+            // 'currency_id.required' => 'Region Currency is required!',
         ]);
         try {
             //code...
             $region = [
                 'name' => $request->name,
                 'city_id' => $request->city,
-                'currency_id' => $request->currency_id,
+                // 'currency_id' => $request->currency_id,
                 'address' => $request->address,
                 'phone' => $request->phone,
             ];
@@ -105,7 +105,7 @@ class RegionController extends Controller
         $data['region'] = Region::find($id);
         $data['cities'] = City::all();
         $data['admins'] = Admin::all(['name', 'id']) ?? [];
-        $data['currencies'] = CommonHelper::$currencies;
+        // $data['currencies'] = CommonHelper::$currencies;
         $data['vehicle_types'] = CommonHelper::$vehicle_types;
         return view($guard.'.regions.create', $data);
     }
@@ -119,14 +119,14 @@ class RegionController extends Controller
             'name' => 'required',
             'city' => 'required',
             'admin' => 'nullable|exists:admins,id', // Admin assignment is optional
-            'currency_id' => 'required',
+            // 'currency_id' => 'required',
             'address' => 'required',
             'phone' => 'required',
             'vehicle_type_id' => 'required|array'
         ], [
             'name.required' => 'Region name is required!',
             'city.required' => 'Region City is required!',
-            'currency_id.required' => 'Region Currency is required!',
+            // 'currency_id.required' => 'Region Currency is required!',
         ]);
         try {
             //code...
@@ -134,7 +134,7 @@ class RegionController extends Controller
             $region->name = $request->name;
             $region->city_id = $request->city;
             $region->admin_id = $request->admin ?? null;
-            $region->currency_id = $request->currency_id ?? null;
+            // $region->currency_id = $request->currency_id ?? null;
             $region->address = $request->address ?? null;
             $region->phone = $request->phone ?? null;
             $region->status = $request->status == 'on' ? 1 : 0;

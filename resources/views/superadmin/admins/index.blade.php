@@ -28,7 +28,7 @@
                                         @if ($r->regions()->count())
                                             <ul>
                                                 @foreach ($r->regions as $reg)
-                                                    <li> <a href="{{ route($guard . '.admins.edit', $reg->id) }}"
+                                                    <li> <a href="{{ route($guard . '.regions.edit', $reg->id) }}"
                                                             class="btn btn-link"> {{ $reg->name }} </a></li>
                                                 @endforeach
                                             </ul>

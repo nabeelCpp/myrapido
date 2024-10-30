@@ -14,6 +14,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Plan</th>
                             <th scope="col">Sub title</th>
+                            <th scope="col">Job Fee</th>
                             <th scope="col">Status</th>
                             <th scope="col">Created At</th>
                             <th scope="col">Action</th>
@@ -26,6 +27,7 @@
                                     <th scope="row">{{ $k+1 }}</th>
                                     <td>{{ $r->title }}</td>
                                     <td>{{ $r->sub_title }}</td>
+                                    <td>{{ $r->job_fee }} %</td>
                                     <td>@if($r->status) <span class="badge bg-success">Enabled</span> @else <span class="badge bg-danger">Disabled</span> @endif</td>
                                     <td>{{ \Carbon\Carbon::parse($r->created_at)->format('d M-Y H:i') }}</td>
                                     <td>

@@ -18,6 +18,10 @@
                 <input type="text" class="form-control" id="sub_title" placeholder="Sub Title *" name="sub_title" value="{{ old('sub_title') ?? ($plan->sub_title ?? '') }}">
                 <label for="name">Sub Title *</label>
             </div>
+            <div class="form-floating mb-3">
+                <input type="number" min="0" class="form-control" id="job_fee" placeholder="Job Fee (%) *" name="job_fee" value="{{ old('job_fee') ?? ($plan->job_fee ?? '') }}">
+                <label for="name">Job Fee (%) *</label>
+            </div>
             <div class="col-sm-12 col-xl-12 border-top">
                 <div class="bg-light rounded h-100 p-4">
                     <h6 class="mb-4">Plan Prices</h6>

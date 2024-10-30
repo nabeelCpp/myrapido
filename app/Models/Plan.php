@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     use HasFactory;
-    protected $fillable = ['title','sub_title', 'description', 'status'];
+    protected $fillable = ['title','sub_title', 'description', 'status', 'job_fee'];
 
     public function planPrices() {
         return $this->hasMany(PlanPrice::class);

@@ -43,12 +43,14 @@ class PlanController extends Controller
             'title' => 'required|unique:plans,title',
             'sub_title' => 'required',
             'description' => 'required',
+            'job_fee' => 'required|numeric',
         ]);
         try {
             $plan = Plan::create([
                 'title' => $request->title,
                 'sub_title' => $request->sub_title,
                 'description' => $request->description,
+                'job_fee' => $request->job_fee,
                 'status' => $request->status == 'on' ? 1 : 0
             ]);
 
@@ -110,12 +112,14 @@ class PlanController extends Controller
             'title' => 'required|unique:plans,title,'.$id,
             'sub_title' => 'required',
             'description' => 'required',
+            'job_fee' => 'required|numeric',
         ]);
         $guard = CommonHelper::getGuardName();
         $plan = Plan::findOrFail($id);
         try {
             $plan->title = $request->title;
             $plan->sub_title = $request->sub_title;
+            $plan->job_fee = $request->job_fee;
             $plan->description = $request->description;
             $plan->status = $request->status == 'on' ? 1 : 0;
             // remove old plan prices

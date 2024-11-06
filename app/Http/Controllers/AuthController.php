@@ -33,15 +33,15 @@ class AuthController extends Controller
     public function logout()
     {
         $request = request();
-        $guard = $request->whoIs;
-        if($guard == 'superadmin') {
-            Auth::guard('superadmin')->logout();
-            Auth::guard('admin')->logout();
-            Auth::guard('customer')->logout();
-            Auth::guard('driver')->logout();
-        }else{
+        $guard = $request->guard;
+        // if($guard == 'superadmin') {
+        //     Auth::guard('superadmin')->logout();
+        //     Auth::guard('admin')->logout();
+            // Auth::guard('customer')->logout();
+            // Auth::guard('driver')->logout();
+        // }else{
             Auth::guard($guard)->logout();
-        }
+        // }
         return redirect()->route($guard.'.login');
     }
 

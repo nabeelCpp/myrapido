@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\{Dashboard as AdminDashboard, Drivers as DriversController};
 use App\Http\Controllers\SuperAdmin\PlanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CityController;
@@ -16,7 +17,6 @@ Route::get('/', function () {
 Route::prefix('superadmin')->as('superadmin.')->group( function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::middleware(['superadmin'])->group(function () {
         Route::get('', [SuperAdminDashboard::class, 'index'])->name('dashboard');
@@ -28,3 +28,15 @@ Route::prefix('superadmin')->as('superadmin.')->group( function () {
         Route::resource('plans', PlanController::class);
     });
 });
+
+// Admin routes
+Route::prefix('admin')->as('admin.')->group( function() {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::middleware(['admin'])->group(function() {
+        Route::get('', [AdminDashboard::class, 'index'])->name('dashboard');
+        Route::resource('drivers', DriversController::class);
+    });
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -21,4 +21,8 @@ class Region extends Model
     public function vehicleTypes() {
         return $this->hasMany(RegionVehiclesType::class);
     }
+
+    public function drivers() {
+        return $this->hasMany(Driver::class);
+    }
 }

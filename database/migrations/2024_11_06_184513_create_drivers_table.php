@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone')->unique();
-            $table->integer('region_id');
-            $table->integer('vehicle_type_id');
-            $table->string('license_number');
+            $table->string('gender');
             $table->string('nic');
-            $table->string('status')->default('pending');
+            $table->string('phone')->unique();
+            $table->string('license_number');
+            $table->integer('region_id');
+            $table->string('status')->default('pending')->comment('pending, approved, rejected,blocked'); // pending, approved, rejected, blocked
+            $table->string('profile_picture')->nullable();
+            $table->tinyInteger('is_deleted')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

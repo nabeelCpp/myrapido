@@ -2,17 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CommonHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Drivers extends Controller
 {
+    protected $perPage;
+    protected $guard;
+    protected $admin, $region;
+
+    function __construct() {
+        $this->perPage = CommonHelper::PER_PAGE;
+        $this->guard = request()->whoIs;
+        $this->admin = is_admin_authorized();
+        $this->region = $this->admin->region;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        dd('index');
+        $data['drivers'] = Driver::where(['region_id' => $this->region->id])->latest()->paginate(10);
+        // return view('admin.drivers.index', $data);
     }
 
     /**

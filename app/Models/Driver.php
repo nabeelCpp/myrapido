@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Driver extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'phone', 'region_id', 'vehicle_type_id', 'license_number', 'nic', 'status'];
+    protected $fillable = ['name', 'gender', 'phone','nic', 'profile_picture', 'license_number', 'region_id', 'is_deleted', 'status'];
 
     public function region() {
         return $this->belongsTo(Region::class);
     }
 
-    public function vehicleDetail() {
-        return $this->hasOne(VehicleDetail::class);
+    public function vehicle() {
+        return $this->belongsTo(Vehicle::class);
     }
 }

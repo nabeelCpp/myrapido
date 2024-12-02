@@ -12,7 +12,7 @@ class Admin extends Authenticatable
 
     protected $fillable = ['name', 'email', 'password', 'phone'];
 
-    public function regions() {
-        return $this->hasMany(Region::class);
+    public function region() {
+        return $this->hasOne(Region::class);
     }
 }

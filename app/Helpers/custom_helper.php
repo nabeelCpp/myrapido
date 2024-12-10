@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Plan;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -12,4 +13,11 @@ function is_admin_authorized() {
         abort(403, 'Unauthorized action.');
     }
     return $admin;
+}
+
+/**
+ * Get active plans
+ */
+function get_active_plans() {
+    return Plan::where(['status' => 1])->get();
 }

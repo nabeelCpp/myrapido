@@ -36,6 +36,7 @@ Route::prefix('admin')->as('admin.')->group( function() {
     Route::middleware(['admin'])->group(function() {
         Route::get('', [AdminDashboard::class, 'index'])->name('dashboard');
         Route::resource('drivers', DriversController::class);
+        Route::post('drivers/{id}/changeStatus', [DriversController::class, 'changeStatus'])->name('drivers.changeStatus');
     });
 });
 

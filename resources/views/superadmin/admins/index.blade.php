@@ -25,13 +25,9 @@
                                     <td>{{ $r->name }}</td>
                                     <td>{{ $r->email }}</td>
                                     <td>
-                                        @if ($r->regions()->count())
-                                            <ul>
-                                                @foreach ($r->regions as $reg)
-                                                    <li> <a href="{{ route($guard . '.regions.edit', $reg->id) }}"
-                                                            class="btn btn-link"> {{ $reg->name }} </a></li>
-                                                @endforeach
-                                            </ul>
+                                        @if ($r->region)
+                                            <a href="{{ route($guard . '.regions.edit', $r->region->id) }}"
+                                                class="btn btn-link"> {{ $r->region->name }} </a>
                                         @else
                                             -
                                         @endif
